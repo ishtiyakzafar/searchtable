@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 50%;
+      }
+      td,
+      th {
+        border: 1px solid #cccccc;
+        padding: 8px;
+      }
+      th {
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      tr:nth-child(even) {
+        background: #dddddd;
+      }
+      tr:hover {
+        background: black;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <th onclick="sortcolumn('name')">Name</th>
+        <th onclick="sortcolumn('marks')">Marks</th>
+      </thead>
+      <tbody id="tableData"></tbody>
+    </table>
+
+    <script>
+      let sortdirection = false;
+      let personData = [
+        {
+          id: 1,
+          name: "zohn",
+          marks: 50,
+        },
+        {
+          id: 2,
+          name: "Oliver",
+          marks: 30,
+        },
+        {
+          id: 3,
+          name: "Mark",
+          marks: 55,
+        },
+        {
+          id: 4,
+          name: "Undertaker",
+          marks: 80,
+        },
+        {
+          id: 5,
+          name: "Henry",
+          marks: 90,
+        },
+        {
+          id: 6,
+          name: "Lisa",
+          marks: 34,
+        },
+        {
+          id: 7,
+          name: "Nina",
+          marks: 36,
+        },
+        {
+          id: 8,
+          name: "Lesner",
+          marks: 90,
+        },
+      ];
+      console.log(personData);
+
+      function loadtableData(personData) {
+        const tablebody = document.getElementById("tableData");
+        let datahtml = "";
+
+        for (let person of personData) {
+          datahtml += `<tr>
+            <td>${person.name}</td>
+            <td>${person.marks}</td>
+            </tr>`;
+        }
+        console.log(datahtml);
+        tablebody.innerHTML = datahtml;
+      }
+      loadtableData(personData);
+
+      function sortcolumn(columnName) {
+        let datatype = typeof personData[0][columnName];
+        sortdirection = !sortdirection;
+        console.log(datatype);
+
+        switch (datatype) {
+          case "number":
+            sortnumColumn(sortdirection, columnName);
+          case "string":
+            sortnumColumn1(columnName);
+            break;
+        }
+      }
+
+      function sortnumColumn(sort, columnName) {
+        personData = personData.sort((p1, p2) => {
+          return sort
+            ? p1[columnName] - p2[columnName]
+            : p2[columnName] - p1[columnName];
+        });
+        loadtableData(personData);
+      }
+
+      function sortnumColumn1(columnName) {
+        personData = personData.sort((p1, p2) => {
+          if (p1[columnName] < p2[columnName]) return -1;
+          if (p1[columnName] > p2[columnName]) return 1;
+          return 0;
+        });
+        loadtableData(personData);
+      }
+    </script>
+  </body>
+</html>
