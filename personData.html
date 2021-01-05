@@ -13,6 +13,7 @@
       th {
         border: 1px solid #cccccc;
         padding: 8px;
+        text-align: center;
       }
       th {
         font-weight: bold;
@@ -28,8 +29,19 @@
     </style>
   </head>
   <body>
+    <input
+      type="text"
+      name=""
+      placeholder="search"
+      id="demo"
+      value=""
+      onkeyup="searchFun()"
+      autocomplete="off"
+    />
+
     <table>
       <thead>
+        <th>Id</th>
         <th onclick="sortcolumn('name')">Name</th>
         <th onclick="sortcolumn('marks')">Marks</th>
       </thead>
@@ -41,7 +53,7 @@
       let personData = [
         {
           id: 1,
-          name: "zohn",
+          name: "john",
           marks: 50,
         },
         {
@@ -80,7 +92,27 @@
           marks: 90,
         },
       ];
-      console.log(personData);
+
+      const searchFun = () => {
+        const tablebody = document.getElementById("tableData");
+
+        let datahtml = "";
+
+        const datas = personData.filter((ele) => {
+          const userInput = document.getElementById("demo").value.toUpperCase();
+          return !ele.name.toUpperCase().indexOf(userInput);
+        });
+
+        datas.forEach((element) => {
+          datahtml += `<tr>
+          <td>${element.id}</td>
+          <td>${element.name}</td>
+          <td>${element.marks}</td>
+          </tr>`;
+
+          tablebody.innerHTML = datahtml;
+        });
+      };
 
       function loadtableData(personData) {
         const tablebody = document.getElementById("tableData");
@@ -88,19 +120,20 @@
 
         for (let person of personData) {
           datahtml += `<tr>
+            <td>${person.id}</td>
             <td>${person.name}</td>
             <td>${person.marks}</td>
             </tr>`;
         }
-        console.log(datahtml);
+
         tablebody.innerHTML = datahtml;
       }
+
       loadtableData(personData);
 
       function sortcolumn(columnName) {
         let datatype = typeof personData[0][columnName];
         sortdirection = !sortdirection;
-        console.log(datatype);
 
         switch (datatype) {
           case "number":
